@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface FormData { name: string; email: string; phone: string }
@@ -180,29 +180,67 @@ function PaymentModal({ qr, onClose, onPaid }: { qr: QRData; onClose: () => void
 }
 
 // ─── Success Screen ───────────────────────────────────────────────────────────
-function SuccessScreen({ name, onClose }: { name: string; onClose: () => void }) {
+function SuccessScreen({ name, paymentRef, onClose }: { name: string; paymentRef: string; onClose: () => void }) {
+  const [groupLink, setGroupLink] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch(`/api/success-info?ref=${encodeURIComponent(paymentRef)}`)
+      .then(r => r.json())
+      .then(d => { if (d.ok) setGroupLink(d.groupLink) })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [paymentRef])
+
+  const gifts = [
+    { icon: '📊', name: 'Bảng Tính Food Cost Tự Động', path: '/qua-tang/bang-tinh-food-cost' },
+    { icon: '✅', name: 'Checklist 47 Bước Ra Quán Chuẩn', path: '/qua-tang/checklist-mo-quan' },
+    { icon: '📓', name: 'Sổ Tay Nguyên Liệu 5 Vị', path: '/qua-tang/so-tay-nguyen-lieu' },
+  ]
+
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl max-w-sm w-full overflow-hidden shadow-2xl text-center">
-        <div className="px-6 py-10 bg-gradient-to-br from-[#2E7D32] to-[#66BB6A]">
-          <div className="text-6xl mb-3">🎉</div>
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white rounded-2xl max-w-sm w-full overflow-hidden shadow-2xl my-4">
+        <div className="px-6 py-8 bg-gradient-to-br from-[#2E7D32] to-[#66BB6A] text-center">
+          <div className="text-5xl mb-2">🎉</div>
           <h2 className="text-white text-2xl font-black">Thanh toán thành công!</h2>
-          <p className="text-white/90 mt-1">Xin chào <strong>{name}</strong> 👋</p>
+          <p className="text-white/90 mt-1 text-sm">Xin chào <strong>{name}</strong> 👋 Chào mừng vào lớp!</p>
         </div>
-        <div className="p-6">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-5 text-left">
-            <p className="font-bold text-green-800 text-sm mb-2">📧 Kiểm tra email của bạn!</p>
-            <p className="text-gray-600 text-sm leading-relaxed">
-              Cô Hạ vừa gửi email xác nhận kèm <strong>link vào nhóm học viên kín</strong>.<br/>
-              Kiểm tra hộp thư (kể cả Spam/Junk) nhé!
-            </p>
+        <div className="p-5 space-y-4">
+          {/* Bước 1: Vào nhóm */}
+          <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+            <p className="font-bold text-green-800 text-sm mb-2">📌 Bước 1 — Vào nhóm học viên kín</p>
+            {loading ? (
+              <p className="text-gray-400 text-xs">Đang tải link...</p>
+            ) : groupLink ? (
+              <a href={groupLink} target="_blank" rel="noopener noreferrer"
+                className="block w-full py-2.5 rounded-lg font-bold text-white text-sm text-center bg-[#2E7D32]">
+                🌿 Vào nhóm học viên ngay
+              </a>
+            ) : (
+              <p className="text-gray-500 text-xs">Link nhóm đã được gửi vào email của bạn. Kiểm tra hộp thư nhé!</p>
+            )}
           </div>
-          <p className="text-gray-400 text-xs mb-4">
-            Không thấy email sau 10 phút? Liên hệ Cô Hạ qua Facebook để được hỗ trợ.
-          </p>
+
+          {/* Bước 2: Quà tặng */}
+          <div>
+            <p className="font-bold text-gray-800 text-sm mb-2">🎁 Bước 2 — Tải 3 tài liệu quà tặng</p>
+            <div className="space-y-2">
+              {gifts.map(g => (
+                <a key={g.path} href={`${g.path}?ref=${encodeURIComponent(paymentRef)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-2 bg-[#F1F8E9] border border-[#C8E6C9] rounded-lg px-3 py-2 text-sm font-medium text-[#1B5E20] hover:bg-[#E8F5E9]">
+                  <span>{g.icon} {g.name}</span>
+                  <span className="text-xs bg-[#2E7D32] text-white px-2 py-0.5 rounded font-bold whitespace-nowrap">📥 Tải PDF</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <p className="text-gray-400 text-xs text-center">Email xác nhận cũng đã được gửi về hộp thư của bạn.</p>
           <button onClick={onClose}
             className="w-full py-3 rounded-xl font-bold text-white text-sm bg-gradient-to-r from-[#2E7D32] to-[#43A047] shadow-md">
-            ✅ Đã hiểu, đóng lại
+            ✅ Đóng lại
           </button>
         </div>
       </div>
@@ -229,6 +267,7 @@ export default function RauMaDauXanhPage() {
   const [qrData, setQrData] = useState<QRData | null>(null)
   const [showSuccess, setShowSuccess] = useState(false)
   const [successName, setSuccessName] = useState('')
+  const [successRef, setSuccessRef] = useState('')
   const [pendingName, setPendingName] = useState('')
   const formRef = useRef<HTMLDivElement>(null)
 
@@ -799,9 +838,9 @@ export default function RauMaDauXanhPage() {
       {/* ─── MODALS ───────────────────────────────────────────────────────────── */}
       {qrData && (
         <PaymentModal qr={qrData} onClose={() => setQrData(null)}
-          onPaid={() => { setQrData(null); setSuccessName(pendingName || 'bạn'); setShowSuccess(true) }} />
+          onPaid={() => { const ref = qrData?.paymentRef || ''; setQrData(null); setSuccessName(pendingName || 'bạn'); setSuccessRef(ref); setShowSuccess(true) }} />
       )}
-      {showSuccess && <SuccessScreen name={successName} onClose={() => setShowSuccess(false)} />}
+      {showSuccess && <SuccessScreen name={successName} paymentRef={successRef} onClose={() => setShowSuccess(false)} />}
     </main>
   )
 }

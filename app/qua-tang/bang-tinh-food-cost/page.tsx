@@ -1,6 +1,6 @@
 'use client'
 import { Noto_Sans } from 'next/font/google'
-import { useEffect, Suspense } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import AccessGuard from '../AccessGuard'
 
 const noto = Noto_Sans({ subsets: ['vietnamese'], weight: ['400', '600', '700', '900'] })
@@ -93,6 +93,19 @@ function calcCost(items: typeof flavors[0]['items']) {
 
 function FoodCostContent() {
   useEffect(() => { document.title = 'Bảng Tính Food Cost Rau Má – Bếp Cô Hạ' }, [])
+  const [prices, setPrices] = useState<number[][]>(
+    () => flavors.map(f => f.items.map(i => i.unitPrice))
+  )
+  const setPrice = (fi: number, ii: number, val: number) => {
+    setPrices(prev => prev.map((row, r) => r === fi ? row.map((c, ci) => ci === ii ? val : c) : row))
+  }
+  const calcFlavorCost = (fi: number) => {
+    return flavors[fi].items.reduce((sum, item, ii) => {
+      const qty = parseFloat(item.qty)
+      const mul = item.qty.includes('ml') ? 1 / 1000 : item.qty.includes('g') ? 1 / 1000 : 1
+      return sum + qty * mul * (prices[fi][ii] || 0)
+    }, 0)
+  }
   return (
     <div className={noto.className} style={{ background: '#fff', minHeight: '100vh' }}>
       {/* Print button — hidden when printing */}
@@ -150,9 +163,9 @@ function FoodCostContent() {
 
         {/* Per-flavor cost tables */}
         {flavors.map((flavor, idx) => {
-          const estimatedCost = Math.round(calcCost(flavor.items))
+          const estimatedCost = Math.round(calcFlavorCost(idx))
           const profit = flavor.price - estimatedCost
-          const fcPct = Math.round((estimatedCost / flavor.price) * 100)
+          const fcPct = flavor.price > 0 ? Math.round((estimatedCost / flavor.price) * 100) : 0
           return (
             <div key={flavor.name} style={{ marginBottom: 32 }} className={idx > 0 && idx % 2 === 0 ? 'page-break' : ''}>
               <div style={{ background: '#1B5E20', color: '#fff', padding: '10px 16px', borderRadius: '10px 10px 0 0', display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -163,7 +176,7 @@ function FoodCostContent() {
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
                   <tr style={{ background: '#E8F5E9' }}>
-                    {['Nguyên liệu', 'Lượng/ly', 'Đơn vị tính', 'Đơn giá (đ)', 'Thành tiền (đ)', 'Ghi chú'].map(h => (
+                    {['Nguyên liệu', 'Lượng/ly', 'Đơn vị tính', 'Đơn giá (đ) — tự điền', 'Thành tiền (đ)', 'Ghi chú'].map(h => (
                       <th key={h} style={{ border: '1px solid #C8E6C9', padding: '7px 10px', textAlign: 'left', color: '#1B5E20', fontWeight: 700, fontSize: 11 }}>{h}</th>
                     ))}
                   </tr>
@@ -172,14 +185,25 @@ function FoodCostContent() {
                   {flavor.items.map((item, i) => {
                     const qtyNum = parseFloat(item.qty)
                     const unitMul = item.qty.includes('ml') ? 1 / 1000 : item.qty.includes('g') ? 1 / 1000 : 1
-                    const total = Math.round(qtyNum * unitMul * item.unitPrice)
+                    const currentPrice = prices[idx][i] ?? 0
+                    const total = Math.round(qtyNum * unitMul * currentPrice)
                     return (
                       <tr key={item.name} style={{ background: i % 2 === 0 ? '#fff' : '#F9FBF9' }}>
                         <td style={{ border: '1px solid #E0E0E0', padding: '7px 10px', fontWeight: 600 }}>{item.name}</td>
                         <td style={{ border: '1px solid #E0E0E0', padding: '7px 10px', textAlign: 'center' }}>{item.qty}</td>
                         <td style={{ border: '1px solid #E0E0E0', padding: '7px 10px' }}>{item.unit}</td>
-                        <td style={{ border: '1px solid #E0E0E0', padding: '7px 10px', textAlign: 'right' }}>{item.unitPrice.toLocaleString('vi-VN')}</td>
-                        <td style={{ border: '1px solid #E0E0E0', padding: '7px 10px', textAlign: 'right', fontWeight: 600 }}>{total > 0 ? total.toLocaleString('vi-VN') : '___'}</td>
+                        <td style={{ border: '1px solid #E0E0E0', padding: '4px 6px' }}>
+                          <input
+                            type="number"
+                            value={currentPrice || ''}
+                            onChange={e => setPrice(idx, i, Number(e.target.value))}
+                            placeholder="Nhập giá..."
+                            style={{ width: '100%', border: '1px solid #A5D6A7', borderRadius: 5, padding: '4px 6px', fontSize: 12, textAlign: 'right', outline: 'none', background: '#F9FFF9', color: '#1B5E20', fontWeight: 700 }}
+                          />
+                        </td>
+                        <td style={{ border: '1px solid #E0E0E0', padding: '7px 10px', textAlign: 'right', fontWeight: 600, color: currentPrice > 0 ? '#1B5E20' : '#ccc' }}>
+                          {currentPrice > 0 ? total.toLocaleString('vi-VN') : '—'}
+                        </td>
                         <td style={{ border: '1px solid #E0E0E0', padding: '7px 10px', color: '#666', fontSize: 11 }}>{item.note}</td>
                       </tr>
                     )
@@ -194,7 +218,7 @@ function FoodCostContent() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0, border: '1px solid #C8E6C9', borderTop: 'none' }}>
                 {[
                   { label: 'Giá bán đề xuất', value: `${flavor.price.toLocaleString('vi-VN')}đ`, color: '#1B5E20' },
-                  { label: 'Lợi nhuận gộp/ly', value: `${profit.toLocaleString('vi-VN')}đ`, color: '#2E7D32' },
+                  { label: 'Lợi nhuận gộp/ly', value: `${profit >= 0 ? '' : '-'}${Math.abs(profit).toLocaleString('vi-VN')}đ`, color: profit >= 0 ? '#2E7D32' : '#E53935' },
                   { label: 'Food Cost %', value: `≈ ${fcPct}%`, color: fcPct <= 38 ? '#2E7D32' : '#E65100' },
                 ].map(({ label, value, color }) => (
                   <div key={label} style={{ padding: '10px 14px', textAlign: 'center', borderRight: '1px solid #C8E6C9' }}>
