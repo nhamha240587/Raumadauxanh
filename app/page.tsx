@@ -633,6 +633,16 @@ export default function RauMaDauXanhPage() {
                 text: 'Ban đầu chỉ muốn làm cho gia đình, nhưng công thức chuẩn quá nên mở luôn tủ nhỏ bán buổi sáng. Một tháng thu thêm 8–10 triệu. Cô Hạ hỗ trợ tận tình, hỏi gì cũng trả lời ngay.',
                 result: 'Thêm 8–10 triệu/tháng',
               },
+              {
+                name: 'Chị Thu Hà', loc: 'Hải Phòng', stars: 5,
+                text: 'Mình từng tự mày mò 3 tháng mà rau má vẫn bị hăng, màu xanh chỉ giữ được 1–2 tiếng. Học Cô Hạ xong, bài 1 đã "vỡ ra" ngay kỹ thuật sốc nhiệt — màu xanh giữ cả ngày, khách quay lại liên tục. Giờ mình bán cạnh cổng trường, trung bình 90–100 ly/ngày cuối tuần.',
+                result: '90–100 ly/ngày cuối tuần',
+              },
+              {
+                name: 'Chị Ngọc Mai', loc: 'Thái Bình', stars: 5,
+                text: 'Ở Thái Bình chưa có ai bán rau má đậu xanh bài bản nên mình quyết định học để đi trước. Công thức 5 vị của Cô Hạ chi tiết đến từng gram, mình không cần đoán mò gì cả — làm theo là ra đúng. Tháng đầu mở xe đẩy gần chợ, thu về hơn 12 triệu — vượt cả lương văn phòng cũ.',
+                result: 'Hơn 12 triệu/tháng đầu',
+              },
             ].map(({ name, loc, stars, text, result }) => (
               <div key={name} className="bg-white rounded-2xl p-5 shadow-sm border border-[#C8E6C9]">
                 <div className="flex gap-0.5 mb-3">
