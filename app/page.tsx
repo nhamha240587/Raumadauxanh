@@ -62,10 +62,10 @@ function LeadForm({ ctaText, onSuccess }: {
     }
     setStep('loading')
     try {
-      const res = await fetch((process.env.NEXT_PUBLIC_API_BASE ?? 'https://hacofood.vn') + '/api/course-form', {
+      const res = await fetch('/api/course-form', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, course: 'rau-ma-dau-xanh' }),
+        body: JSON.stringify(form),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Lỗi')
@@ -118,7 +118,7 @@ function PaymentModal({ qr, onClose, onPaid }: { qr: QRData; onClose: () => void
   useEffect(() => {
     pollRef.current = setInterval(async () => {
       try {
-        const r = await fetch((process.env.NEXT_PUBLIC_API_BASE ?? 'https://hacofood.vn') + '/api/check-payment?ref=' + qr.paymentRef)
+        const r = await fetch('/api/check-payment?ref=' + qr.paymentRef)
         if (r.ok && (await r.json()).paid) { clearInterval(pollRef.current!); onPaid() }
       } catch { /* silent */ }
     }, 5000)
@@ -230,8 +230,9 @@ export default function RauMaDauXanhPage() {
   const scrollToForm = () => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
   const handleSuccess = (data: FormData & Record<string, unknown>) => {
-    if (data.qrUrl) {
-      setQrData(data as unknown as QRData)
+    const qrPayload = data.qr as QRData | undefined
+    if (qrPayload?.qrUrl) {
+      setQrData({ ...qrPayload, paymentRef: data.paymentRef as string })
     } else {
       setSuccessName((data as FormData).name)
       setShowSuccess(true)
