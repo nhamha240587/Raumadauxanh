@@ -331,7 +331,7 @@ export default function RauMaDauXanhPage() {
             className="w-full max-w-sm py-4 rounded-2xl font-black text-white text-lg bg-gradient-to-r from-[#E53935] to-[#C62828] hover:from-[#C62828] hover:to-[#B71C1C] shadow-2xl shadow-red-900/50 active:scale-[0.98] transition-all">
             🌿 ĐĂNG KÝ NGAY — CHỈ 299.000Đ
           </button>
-          <p className="text-green-300/50 text-xs mt-2">Giá gốc <s>999.000đ</s> · Tiết kiệm 700.000đ · Cam kết hoàn tiền 7 ngày</p>
+          <p className="text-green-300/50 text-xs mt-2">Tổng giá trị <s>2.196.000đ</s> · Tiết kiệm 1.897.000đ · Hỗ trợ đến khi thành công</p>
         </div>
       </section>
 
@@ -683,7 +683,7 @@ export default function RauMaDauXanhPage() {
               <p className="text-green-100 font-semibold text-sm mb-1">Hệ Thống Rau Má Kinh Doanh 7 Ngày</p>
               <p className="text-green-200 text-xs mb-3">Xanh Chuẩn · Sánh Mịn · Bán Được Ngay</p>
               <div className="flex items-center justify-center gap-3">
-                <span className="text-green-300/70 line-through text-xl font-bold">999.000đ</span>
+                <span className="text-green-300/70 line-through text-xl font-bold">2.196.000đ</span>
                 <span className="text-white text-5xl font-black">299.000đ</span>
               </div>
               <div className="mt-2 inline-block bg-[#F9A825] text-white text-xs font-black px-4 py-1 rounded-full">
@@ -791,6 +791,11 @@ export default function RauMaDauXanhPage() {
             <FAQ q="Học xong mà vẫn chưa tự tin kinh doanh thì sao?" a="Cô Hạ cam kết hỗ trợ trực tiếp trong nhóm kín cho đến khi bạn tự tin làm được và bán được — không giới hạn thời gian, không tính thêm phí. Bạn hỏi, Cô Hạ trả lời. Bạn làm sai, Cô Hạ chỉnh. Đến khi thành công mới thôi." />
             <FAQ q="Thanh toán như thế nào? Có thể trả góp không?" a="Thanh toán chuyển khoản ngân hàng, quét QR — hệ thống tự xác nhận và gửi link học trong vài phút. Hiện tại chưa có trả góp nhưng 299.000đ là mức giá đã được tối ưu nhất cho đợt này." />
             <FAQ q="Mua xong bao lâu thì được học?" a="Ngay lập tức. Sau khi thanh toán xác nhận, bạn nhận email với link vào nhóm học viên và toàn bộ tài liệu trong vòng 5–10 phút." />
+            <FAQ q="299.000đ có đắt không? Tôi lo học xong không dùng được." a="Hãy tính ngược lại: 1 ngày bán 20 ly rau má × 35.000đ = 700.000đ doanh thu. Chỉ cần 1 buổi bán là thu lại học phí. Và bạn có cả hệ thống 5 vị, công thức chuẩn gram, checklist mở quán — dùng được nhiều năm. Rủi ro thật sự là KHÔNG học mà vẫn mò mẫm — vừa tốn nguyên liệu thử sai, vừa mất thời gian, vừa bỏ lỡ khách hàng mỗi ngày." />
+            <FAQ q="Tôi đang có công việc, không có nhiều thời gian học." a="Video chỉ 25–45 phút/bài, xem lúc rảnh trên điện thoại — trên xe buýt, lúc ăn trưa, tối trước khi ngủ đều được. Không cần học liên tục — học 1 bài áp dụng ngay, thấy kết quả rồi học tiếp. Nhiều học viên của Cô Hạ vừa đi làm fulltime vừa mở được quán rau má buổi tối hoặc cuối tuần." />
+            <FAQ q="Khu vực tôi ít người uống rau má, bán được không?" a="Rau má đậu xanh đang là xu hướng toàn quốc — từ Hà Nội đến TP.HCM, từ thị xã đến huyện nhỏ đều bán được. Thực tế là những nơi chưa có quán lại dễ chiếm thị phần hơn. Học viên Cô Hạ bán thành công ở nhiều tỉnh thành, kể cả vùng nông thôn và khu công nghiệp." />
+            <FAQ q="Tôi không có vốn nhiều, có mở quán được không?" a="Hoàn toàn được. Mô hình xe đẩy hoặc bán online (giao hàng, đặt trước) chỉ cần 3–5 triệu vốn ban đầu: dụng cụ cơ bản + nguyên liệu mẻ đầu. Bài 7 trong khóa học hướng dẫn chi tiết cách tính vốn, chọn mô hình phù hợp túi tiền. Bắt đầu nhỏ → bán được → mở rộng dần — không cần đổ vốn lớn ngay từ đầu." />
+            <FAQ q="Tôi đã từng học nơi khác rồi nhưng không thành công." a="Cô Hạ hiểu điều này. Lý do học mà không thành công thường là: công thức thiếu chi tiết (không chuẩn gram), không có quy trình kinh doanh đi kèm, hoặc không có ai hỗ trợ khi gặp khó khăn. Khóa học này khác ở chỗ: công thức chuẩn từng gram từng giây, có checklist 47 bước mở quán, và Cô Hạ hỗ trợ trực tiếp trong nhóm kín cho đến khi bạn bán được — không giới hạn thời gian." />
           </div>
         </div>
       </section>
