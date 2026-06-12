@@ -181,25 +181,29 @@ function PaymentModal({ qr, onClose, onPaid }: { qr: QRData; onClose: () => void
 
 // ─── Success Screen ───────────────────────────────────────────────────────────
 function SuccessScreen({ name, onClose }: { name: string; onClose: () => void }) {
-  const groupLink = process.env.NEXT_PUBLIC_COURSE_GROUP_LINK || '#'
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl max-w-sm w-full overflow-hidden shadow-2xl text-center">
         <div className="px-6 py-10 bg-gradient-to-br from-[#2E7D32] to-[#66BB6A]">
           <div className="text-6xl mb-3">🎉</div>
-          <h2 className="text-white text-2xl font-black">Chào mừng vào lớp!</h2>
+          <h2 className="text-white text-2xl font-black">Thanh toán thành công!</h2>
           <p className="text-white/90 mt-1">Xin chào <strong>{name}</strong> 👋</p>
         </div>
         <div className="p-6">
-          <p className="text-gray-600 mb-5 text-sm leading-relaxed">
-            Cô Hạ đã gửi thông tin học vào email của bạn.<br/>
-            Vào nhóm kín để bắt đầu học ngay hôm nay!
+          <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-5 text-left">
+            <p className="font-bold text-green-800 text-sm mb-2">📧 Kiểm tra email của bạn!</p>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Cô Hạ vừa gửi email xác nhận kèm <strong>link vào nhóm học viên kín</strong>.<br/>
+              Kiểm tra hộp thư (kể cả Spam/Junk) nhé!
+            </p>
+          </div>
+          <p className="text-gray-400 text-xs mb-4">
+            Không thấy email sau 10 phút? Liên hệ Cô Hạ qua Facebook để được hỗ trợ.
           </p>
-          <a href={groupLink} target="_blank" rel="noopener noreferrer"
-            className="block w-full py-3.5 rounded-xl font-black text-white text-base bg-gradient-to-r from-[#2E7D32] to-[#43A047] shadow-lg mb-3">
-            🌿 Vào nhóm học viên ngay
-          </a>
-          <button onClick={onClose} className="w-full py-2.5 text-gray-400 hover:text-gray-600 text-sm">Đóng</button>
+          <button onClick={onClose}
+            className="w-full py-3 rounded-xl font-bold text-white text-sm bg-gradient-to-r from-[#2E7D32] to-[#43A047] shadow-md">
+            ✅ Đã hiểu, đóng lại
+          </button>
         </div>
       </div>
     </div>
@@ -225,6 +229,7 @@ export default function RauMaDauXanhPage() {
   const [qrData, setQrData] = useState<QRData | null>(null)
   const [showSuccess, setShowSuccess] = useState(false)
   const [successName, setSuccessName] = useState('')
+  const [pendingName, setPendingName] = useState('')
   const formRef = useRef<HTMLDivElement>(null)
 
   const scrollToForm = () => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -232,6 +237,7 @@ export default function RauMaDauXanhPage() {
   const handleSuccess = (data: FormData & Record<string, unknown>) => {
     const qrPayload = data.qr as QRData | undefined
     if (qrPayload?.qrUrl) {
+      setPendingName((data as FormData).name)
       setQrData({ ...qrPayload, paymentRef: data.paymentRef as string })
     } else {
       setSuccessName((data as FormData).name)
@@ -793,7 +799,7 @@ export default function RauMaDauXanhPage() {
       {/* ─── MODALS ───────────────────────────────────────────────────────────── */}
       {qrData && (
         <PaymentModal qr={qrData} onClose={() => setQrData(null)}
-          onPaid={() => { setQrData(null); setSuccessName('bạn'); setShowSuccess(true) }} />
+          onPaid={() => { setQrData(null); setSuccessName(pendingName || 'bạn'); setShowSuccess(true) }} />
       )}
       {showSuccess && <SuccessScreen name={successName} onClose={() => setShowSuccess(false)} />}
     </main>
