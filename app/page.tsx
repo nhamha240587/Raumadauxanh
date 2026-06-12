@@ -13,10 +13,10 @@ type Step = 'idle' | 'loading' | 'success' | 'error'
 function fmt(n: number) { return n.toLocaleString('vi-VN') + 'đ' }
 
 // ─── Countdown ────────────────────────────────────────────────────────────────
-function useCountdown(hours = 48) {
-  const [time, setTime] = useState({ h: hours, m: 0, s: 0 })
+function useCountdown(hours = 5.3) {
+  const [time, setTime] = useState({ h: Math.floor(hours), m: Math.round((hours % 1) * 60), s: 0 })
   useEffect(() => {
-    const key = 'haco_rauma_cd'
+    const key = 'haco_rauma_cd3'
     const stored = typeof window !== 'undefined' ? localStorage.getItem(key) : null
     const end = stored ? parseInt(stored) : Date.now() + hours * 3600000
     if (!stored) localStorage.setItem(key, String(end))
@@ -30,7 +30,7 @@ function useCountdown(hours = 48) {
 }
 
 function CountdownBox({ dark = false }: { dark?: boolean }) {
-  const { h, m, s } = useCountdown(48)
+  const { h, m, s } = useCountdown(5.3)
   const box = dark
     ? 'bg-white/20 text-white border border-white/40 backdrop-blur-sm'
     : 'bg-white text-[#1B5E20] border-2 border-[#A5D6A7] shadow-sm'
@@ -536,9 +536,9 @@ export default function RauMaDauXanhPage() {
             <div className="relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/images/co-ha-portrait.png"
+                src="/images/co-ha-flowers.jpg"
                 alt="Cô Hạ – Sáng lập Bếp Cô Hạ"
-                className="w-full object-cover max-h-80 object-top"
+                className="w-full object-cover max-h-80 object-center"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1B5E20] via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
@@ -648,7 +648,7 @@ export default function RauMaDauXanhPage() {
                 <span className="text-white text-5xl font-black">299.000đ</span>
               </div>
               <div className="mt-2 inline-block bg-[#F9A825] text-white text-xs font-black px-4 py-1 rounded-full">
-                🎉 TIẾT KIỆM 700.000Đ — CHỈ HÔM NAY
+                🎉 TIẾT KIỆM HƠN 1.9 TRIỆU — CHỈ HÔM NAY
               </div>
             </div>
 
@@ -657,11 +657,11 @@ export default function RauMaDauXanhPage() {
               <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Bao gồm trong gói:</p>
 
               {[
-                { name: '7 Video Bài Giảng HD — Xem Đi Xem Lại Mãi Mãi', value: '599.000đ', desc: 'Từ sơ chế → 5 sốt nền → ra ly kinh doanh. Học mọi lúc, mọi nơi.' },
-                { name: '🎁 Bảng Tính Food Cost Tự Động — Biết Ngay Lãi Bao Nhiêu Mỗi Ly', value: '299.000đ', desc: 'File Excel điền số vào là ra ngay: giá bán, chi phí, lợi nhuận — không cần biết kế toán.' },
-                { name: '🎁 Checklist 47 Bước Ra Quán Chuẩn — Không Bỏ Sót Thứ Gì', value: '199.000đ', desc: 'Danh sách dụng cụ, nguyên liệu, quy trình mở quán từ A–Z của người đã làm thật.' },
-                { name: '🎁 Sổ Tay Nguyên Liệu 5 Vị — Mua Đúng, Không Mua Thừa', value: '149.000đ', desc: 'Đi chợ đúng 1 lần, không mua nhầm, không hao phí. Có thể in ra mang đi siêu thị.' },
-                { name: '🎁 Nhóm Học Viên Kín VIP — Hỏi Gì Cô Hạ Trả Lời 24/7', value: 'Vô giá', desc: 'Cộng đồng 200+ người kinh doanh rau má. Chia sẻ kinh nghiệm thực chiến mỗi ngày.' },
+                { name: '7 Video Bài Giảng HD — Xem Đi Xem Lại Mãi Mãi', value: '999.000đ', desc: 'Từ sơ chế → 5 sốt nền → ra ly kinh doanh. Học mọi lúc, mọi nơi.' },
+                { name: '🎁 Bảng Tính Food Cost Tự Động — Biết Ngay Lãi Bao Nhiêu Mỗi Ly', value: '499.000đ', desc: 'Điền số vào là ra ngay: giá bán, chi phí, lợi nhuận từng vị — không cần biết kế toán. Tặng kèm file PDF tải về.' },
+                { name: '🎁 Checklist 47 Bước Ra Quán Chuẩn — Không Bỏ Sót Thứ Gì', value: '399.000đ', desc: 'Dụng cụ, nguyên liệu, quy trình mở quán từ A–Z. In ra gạch từng ô là xong. Tặng kèm file PDF.' },
+                { name: '🎁 Sổ Tay Nguyên Liệu 5 Vị — Mua Đúng, Không Mua Thừa', value: '299.000đ', desc: 'Đi chợ đúng 1 lần, không mua nhầm, không hao phí. In ra mang đi chợ. Tặng kèm file PDF.' },
+                { name: '🎁 Nhóm Học Viên Kín VIP — Cô Hạ Hỗ Trợ Đến Khi Thành Công', value: 'Vô giá', desc: 'Cộng đồng 200+ người kinh doanh rau má. Hỏi gì Cô Hạ trả lời. Hỗ trợ không giới hạn thời gian.' },
               ].map(({ name, value, desc }) => (
                 <div key={name} className="flex gap-3 items-start bg-[#F9FBF9] rounded-xl p-3 border border-[#E8F5E9]">
                   <span className="text-[#43A047] text-lg flex-shrink-0 mt-0.5">✅</span>
@@ -679,7 +679,7 @@ export default function RauMaDauXanhPage() {
               <div className="border-t border-dashed border-gray-200 pt-3 mt-2">
                 <div className="flex justify-between items-center mb-1">
                   <span className="text-gray-500 text-sm font-medium">Tổng giá trị thực:</span>
-                  <span className="text-gray-400 line-through font-bold text-base">1.246.000đ</span>
+                  <span className="text-gray-400 line-through font-bold text-base">2.196.000đ</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="font-black text-gray-800 text-base">Giá hôm nay:</span>
@@ -692,9 +692,9 @@ export default function RauMaDauXanhPage() {
             <div className="mx-5 mb-5 p-4 bg-[#FFF8E1] border border-[#FFE082] rounded-2xl flex gap-3 items-start">
               <span className="text-2xl flex-shrink-0">🛡️</span>
               <div>
-                <p className="font-black text-[#F57F17] text-sm">Cam Kết Làm Được Trong 7 Ngày</p>
+                <p className="font-black text-[#F57F17] text-sm">Cam Kết Hỗ Trợ Đến Khi Bạn Thành Công</p>
                 <p className="text-gray-600 text-xs mt-0.5 leading-relaxed">
-                  Học đúng theo hướng dẫn mà chưa làm được → Cô Hạ <strong>hoàn 100% học phí</strong>, không hỏi lý do. Rủi ro về phía Cô Hạ, không phải bạn.
+                  Học xong mà còn thắc mắc, chưa tự tin làm được → Cô Hạ <strong>hỗ trợ trực tiếp trong nhóm kín</strong> cho đến khi bạn làm thành công. Không giới hạn thời gian, không tính phí thêm.
                 </p>
               </div>
             </div>
@@ -725,7 +725,7 @@ export default function RauMaDauXanhPage() {
           <div className="mt-5 grid grid-cols-3 gap-2 text-center">
             {[
               { icon: '🔒', label: 'Bảo mật thông tin' },
-              { icon: '✅', label: 'Hoàn tiền 7 ngày' },
+              { icon: '🤝', label: 'Hỗ trợ đến thành công' },
               { icon: '📱', label: 'Học qua điện thoại' },
             ].map(({ icon, label }) => (
               <div key={label} className="bg-[#F9FBF9] border border-gray-100 rounded-xl p-3">
@@ -749,7 +749,7 @@ export default function RauMaDauXanhPage() {
             <FAQ q="Học ở đâu? Có phải đến lớp không?" a="Hoàn toàn online qua nhóm kín. Học mọi lúc, mọi nơi — trên điện thoại hay máy tính đều được. Video lưu vĩnh viễn, xem đi xem lại bao nhiêu lần tùy thích." />
             <FAQ q="Tôi không có kinh nghiệm nấu ăn, học được không?" a="Hoàn toàn được! Cô Hạ thiết kế khoá học theo kiểu cầm tay chỉ việc — từ cách chọn rau, đến đong gram, đến thao tác xay lọc. Người mới bắt đầu từ con số 0 học vẫn làm được." />
             <FAQ q="Sau khoá học có thể mở quán kinh doanh luôn không?" a="Có thể! Bài 7 hướng dẫn đầy đủ: định giá bán, tính food cost, quy trình ra ly chuẩn. Bonus Checklist 47 bước và Bảng tính food cost giúp bạn chuẩn bị mở quán không thiếu thứ gì." />
-            <FAQ q="Nếu học xong không làm được thì sao?" a={'Cô Hạ cam kết hoàn 100% học phí trong 7 ngày — không cần giải thích lý do. Bạn chỉ cần nhắn tin vào nhóm là được hoàn tiền ngay. Rủi ro về phía Cô Hạ, không phải bạn.'} />
+            <FAQ q="Học xong mà vẫn chưa tự tin kinh doanh thì sao?" a="Cô Hạ cam kết hỗ trợ trực tiếp trong nhóm kín cho đến khi bạn tự tin làm được và bán được — không giới hạn thời gian, không tính thêm phí. Bạn hỏi, Cô Hạ trả lời. Bạn làm sai, Cô Hạ chỉnh. Đến khi thành công mới thôi." />
             <FAQ q="Thanh toán như thế nào? Có thể trả góp không?" a="Thanh toán chuyển khoản ngân hàng, quét QR — hệ thống tự xác nhận và gửi link học trong vài phút. Hiện tại chưa có trả góp nhưng 299.000đ là mức giá đã được tối ưu nhất cho đợt này." />
             <FAQ q="Mua xong bao lâu thì được học?" a="Ngay lập tức. Sau khi thanh toán xác nhận, bạn nhận email với link vào nhóm học viên và toàn bộ tài liệu trong vòng 5–10 phút." />
           </div>
@@ -769,7 +769,7 @@ export default function RauMaDauXanhPage() {
           </h2>
 
           <div className="mb-5 space-y-1.5 text-sm text-green-300">
-            {['✅ 7 video HD xem mãi mãi (599k)', '✅ Bảng tính food cost tự động (299k)', '✅ Checklist 47 bước ra quán (199k)', '✅ Sổ tay nguyên liệu 5 vị (149k)', '✅ Nhóm VIP + hỗ trợ 24/7 (vô giá)', '🛡️ Cam kết hoàn tiền 100% trong 7 ngày'].map(item => (
+            {['✅ 7 video HD xem mãi mãi (999k)', '✅ Bảng tính food cost PDF (499k)', '✅ Checklist 47 bước ra quán PDF (399k)', '✅ Sổ tay nguyên liệu 5 vị PDF (299k)', '✅ Nhóm VIP + hỗ trợ không giới hạn (vô giá)', '🤝 Cam kết hỗ trợ đến khi bạn thành công'].map(item => (
               <p key={item} className="text-left max-w-xs mx-auto">{item}</p>
             ))}
           </div>
