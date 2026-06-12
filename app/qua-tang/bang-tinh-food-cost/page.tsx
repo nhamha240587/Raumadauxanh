@@ -1,7 +1,7 @@
 'use client'
 import { Noto_Sans } from 'next/font/google'
-
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
+import AccessGuard from '../AccessGuard'
 
 const noto = Noto_Sans({ subsets: ['vietnamese'], weight: ['400', '600', '700', '900'] })
 
@@ -91,7 +91,7 @@ function calcCost(items: typeof flavors[0]['items']) {
   }, 0)
 }
 
-export default function FoodCostPage() {
+function FoodCostContent() {
   useEffect(() => { document.title = 'Bảng Tính Food Cost Rau Má – Bếp Cô Hạ' }, [])
   return (
     <div className={noto.className} style={{ background: '#fff', minHeight: '100vh' }}>
@@ -255,5 +255,13 @@ export default function FoodCostPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function FoodCostPage() {
+  return (
+    <Suspense>
+      <AccessGuard><FoodCostContent /></AccessGuard>
+    </Suspense>
   )
 }

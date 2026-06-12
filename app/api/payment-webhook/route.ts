@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     await confirmPayment(paymentRef)
 
     await Promise.all([
-      sendCourseConfirmEmail({ name: lead.name, email: lead.email, amount: expected })
+      sendCourseConfirmEmail({ name: lead.name, email: lead.email, amount: expected, paymentRef })
         .then(() => markEmailSent(lead.id))
         .catch(console.error),
       notifyCourseLead({ name: lead.name, email: lead.email, phone: lead.phone, paymentRef, status: 'paid', amount: expected })

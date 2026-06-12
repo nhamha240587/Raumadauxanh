@@ -1,6 +1,7 @@
 'use client'
 import { Noto_Sans } from 'next/font/google'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
+import AccessGuard from '../AccessGuard'
 
 const noto = Noto_Sans({ subsets: ['vietnamese'], weight: ['400', '600', '700', '900'] })
 
@@ -96,7 +97,7 @@ const groups = [
   },
 ]
 
-export default function ChecklistPage() {
+function ChecklistContent() {
   const total = groups.reduce((s, g) => s + g.steps.length, 0)
   useEffect(() => { document.title = 'Checklist 47 Bước Ra Quán Rau Má – Bếp Cô Hạ' }, [])
   return (
@@ -198,5 +199,13 @@ export default function ChecklistPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ChecklistPage() {
+  return (
+    <Suspense>
+      <AccessGuard><ChecklistContent /></AccessGuard>
+    </Suspense>
   )
 }

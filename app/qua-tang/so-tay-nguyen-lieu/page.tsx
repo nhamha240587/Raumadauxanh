@@ -1,6 +1,7 @@
 'use client'
 import { Noto_Sans } from 'next/font/google'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
+import AccessGuard from '../AccessGuard'
 
 const noto = Noto_Sans({ subsets: ['vietnamese'], weight: ['400', '600', '700', '900'] })
 
@@ -137,7 +138,7 @@ const flavors = [
   },
 ]
 
-export default function SoTayNguyenLieuPage() {
+function SoTayContent() {
   useEffect(() => { document.title = 'Sổ Tay Nguyên Liệu 5 Vị Rau Má – Bếp Cô Hạ' }, [])
   return (
     <div className={noto.className} style={{ background: '#fff', minHeight: '100vh' }}>
@@ -283,5 +284,13 @@ export default function SoTayNguyenLieuPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SoTayNguyenLieuPage() {
+  return (
+    <Suspense>
+      <AccessGuard><SoTayContent /></AccessGuard>
+    </Suspense>
   )
 }

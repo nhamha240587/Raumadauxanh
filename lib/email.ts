@@ -6,12 +6,13 @@ function getResend() {
 
 const FROM_EMAIL = process.env.FROM_EMAIL || 'Bếp Cô Hạ <no-reply@hacofood.vn>'
 
-export async function sendCourseConfirmEmail(to: { name: string; email: string; amount: number }) {
+export async function sendCourseConfirmEmail(to: { name: string; email: string; amount: number; paymentRef?: string }) {
   const groupLink = process.env.COURSE_GROUP_LINK || process.env.NEXT_PUBLIC_COURSE_GROUP_LINK || '#'
   const siteUrl = process.env.BASE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://hacofood.vn')
   const amountText = to.amount.toLocaleString('vi-VN') + 'đ'
 
+  const refParam = to.paymentRef ? `?ref=${encodeURIComponent(to.paymentRef)}` : ''
   const giftsHtml = [
     { icon: '📊', name: 'Bảng Tính Food Cost Tự Động', path: '/qua-tang/bang-tinh-food-cost', value: '499.000đ' },
     { icon: '✅', name: 'Checklist 47 Bước Ra Quán Chuẩn', path: '/qua-tang/checklist-mo-quan', value: '399.000đ' },
@@ -22,7 +23,7 @@ export async function sendCourseConfirmEmail(to: { name: string; email: string; 
         <p style="margin:0;font-weight:700;color:#1B5E20;font-size:14px;">${g.icon} ${g.name}</p>
         <p style="margin:3px 0 0;font-size:12px;color:#888;">Trị giá <s>${g.value}</s> — Tặng kèm miễn phí</p>
       </div>
-      <a href="${siteUrl}${g.path}" target="_blank"
+      <a href="${siteUrl}${g.path}${refParam}" target="_blank"
         style="display:inline-block;background:#1B5E20;color:#fff;padding:8px 14px;border-radius:7px;text-decoration:none;font-weight:700;font-size:12px;white-space:nowrap;flex-shrink:0;">
         📥 Tải PDF
       </a>
