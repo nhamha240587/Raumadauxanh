@@ -7,7 +7,7 @@ function getResend() {
 const FROM_EMAIL = process.env.FROM_EMAIL || 'Bếp Cô Hạ <no-reply@hacofood.vn>'
 
 export async function sendCourseConfirmEmail(to: { name: string; email: string; amount: number }) {
-  const groupLink = process.env.NEXT_PUBLIC_COURSE_GROUP_LINK || '#'
+  const groupLink = process.env.COURSE_GROUP_LINK || process.env.NEXT_PUBLIC_COURSE_GROUP_LINK || '#'
   const amountText = to.amount.toLocaleString('vi-VN') + 'đ'
 
   return getResend().emails.send({
