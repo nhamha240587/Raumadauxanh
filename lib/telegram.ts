@@ -16,7 +16,7 @@ export async function notifyCourseLead(data: {
 }) {
   const isPaid = data.status === 'paid'
   const amountText = (data.amount ?? 299000).toLocaleString('vi-VN') + 'đ'
-  const msg = `${isPaid ? '🟢' : '🔴'} <b>KHÓA RÂU MÁ ĐẬU XANH – ${isPaid ? 'ĐÃ THANH TOÁN' : 'CHỜ THANH TOÁN'}</b>
+  const msg = `${isPaid ? '🟢' : '🔴'} <b>KHÓA RAU MÁ ĐẬU XANH – ${isPaid ? 'ĐÃ THANH TOÁN' : 'CHỜ THANH TOÁN'}</b>
 
 • Tên: <b>${data.name}</b>
 • Email: ${data.email}
@@ -30,7 +30,7 @@ export async function notifyCourseLead(data: {
 export async function notifyPaymentMismatch(data: {
   paymentRef: string; received: number; expected: number; content: string
 }) {
-  const msg = `⚠️ <b>CHUYỂN THIẾU TIỀN – RÂU MÁ ĐẬU XANH</b>
+  const msg = `⚠️ <b>CHUYỂN THIẾU TIỀN – RAU MÁ ĐẬU XANH</b>
 
 • Mã GD: <code>${data.paymentRef}</code>
 • Nhận được: <b>${data.received.toLocaleString('vi-VN')}đ</b>
