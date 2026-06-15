@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://raumadauxanh.hacofood.vn/images/og-image.jpg",
+        url: "https://raumadauxanh.hacofood.vn/images/og-image.png",
         width: 1200,
         height: 630,
         alt: "Khóa Học Rau Má Đậu Xanh – Bếp Cô Hạ",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Khóa Học Rau Má Đậu Xanh – Bếp Cô Hạ",
     description: "Công thức chuẩn vị · Màu xanh giữ 3–4 ngày · Dễ làm · Dễ bán. Chỉ 299.000đ!",
-    images: ["https://raumadauxanh.hacofood.vn/images/og-image.jpg"],
+    images: ["https://raumadauxanh.hacofood.vn/images/og-image.png"],
   },
 };
 
