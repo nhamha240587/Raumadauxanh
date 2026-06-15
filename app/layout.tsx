@@ -8,11 +8,25 @@ export const metadata: Metadata = {
   keywords: ["rau má đậu xanh", "khóa học rau má", "bếp cô hạ", "hacofood", "kinh doanh đồ uống"],
   openGraph: {
     title: "Khóa Học Rau Má Đậu Xanh – Bếp Cô Hạ",
-    description: "Công thức chuẩn vị · Dễ làm · Dễ bán. Chỉ 299.000đ, giảm 70%!",
-    url: "https://hacofood.vn/rau-ma-dau-xanh",
-    siteName: "Hacofood.vn",
+    description: "Công thức chuẩn vị · Màu xanh giữ 3–4 ngày · Dễ làm · Dễ bán. Chỉ 299.000đ!",
+    url: "https://raumadauxanh.hacofood.vn",
+    siteName: "Hacofood.vn – Bếp Cô Hạ",
     locale: "vi_VN",
     type: "website",
+    images: [
+      {
+        url: "https://raumadauxanh.hacofood.vn/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Khóa Học Rau Má Đậu Xanh – Bếp Cô Hạ",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Khóa Học Rau Má Đậu Xanh – Bếp Cô Hạ",
+    description: "Công thức chuẩn vị · Màu xanh giữ 3–4 ngày · Dễ làm · Dễ bán. Chỉ 299.000đ!",
+    images: ["https://raumadauxanh.hacofood.vn/images/og-image.jpg"],
   },
 };
 
