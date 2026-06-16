@@ -13,15 +13,24 @@ type Step = 'idle' | 'loading' | 'success' | 'error'
 function fmt(n: number) { return n.toLocaleString('vi-VN') + 'đ' }
 
 // ─── Countdown ────────────────────────────────────────────────────────────────
-function useCountdown(hours = 5.3) {
+function useCountdown(hours = 2.3) {
   const [time, setTime] = useState({ h: Math.floor(hours), m: Math.round((hours % 1) * 60), s: 0 })
   useEffect(() => {
-    const key = 'haco_rauma_cd3'
+    const key = 'haco_rauma_cd4'
     const stored = typeof window !== 'undefined' ? localStorage.getItem(key) : null
-    const end = stored ? parseInt(stored) : Date.now() + hours * 3600000
-    if (!stored) localStorage.setItem(key, String(end))
+    let end: number
+    if (stored && parseInt(stored) > Date.now()) {
+      end = parseInt(stored)
+    } else {
+      end = Date.now() + hours * 3600000
+      localStorage.setItem(key, String(end))
+    }
     const tick = () => {
       const d = Math.max(0, end - Date.now())
+      if (d === 0) {
+        end = Date.now() + hours * 3600000
+        localStorage.setItem(key, String(end))
+      }
       setTime({ h: Math.floor(d / 3600000), m: Math.floor((d % 3600000) / 60000), s: Math.floor((d % 60000) / 1000) })
     }
     tick(); const id = setInterval(tick, 1000); return () => clearInterval(id)
@@ -30,7 +39,7 @@ function useCountdown(hours = 5.3) {
 }
 
 function CountdownBox({ dark = false }: { dark?: boolean }) {
-  const { h, m, s } = useCountdown(5.3)
+  const { h, m, s } = useCountdown(2.3)
   const box = dark
     ? 'bg-white/20 text-white border border-white/40 backdrop-blur-sm'
     : 'bg-white text-[#1B5E20] border-2 border-[#A5D6A7] shadow-sm'
